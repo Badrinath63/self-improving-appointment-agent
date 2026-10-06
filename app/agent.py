@@ -1,10 +1,8 @@
 import json
 import os
-
 from dotenv import load_dotenv
 from openai import OpenAI
-
-from app.prompts import SYSTEM_PROMPT
+from app.prompts import build_system_prompt
 from app.tools import (
     search_doctors,
     check_availability,
@@ -140,7 +138,7 @@ def run_agent(session_id: str, user_message: str):
 
     response = client.responses.create(
         model=MODEL,
-        instructions=SYSTEM_PROMPT,
+        instructions=build_system_prompt(),
         tools=TOOLS,
         input=session["messages"]
     )
@@ -186,7 +184,7 @@ def run_agent(session_id: str, user_message: str):
 
         response = client.responses.create(
             model=MODEL,
-            instructions=SYSTEM_PROMPT,
+            instructions=build_system_prompt(),
             tools=TOOLS,
             input=[
                 *session["messages"],

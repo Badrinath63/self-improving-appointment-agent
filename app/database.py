@@ -53,3 +53,10 @@ def add_appointment(appointment):
 
 def get_appointments():
     return appointments
+
+
+def reset_database():
+    """
+    Reset appointment state for a fresh evaluation run.
+    """
+    appointments.clear()

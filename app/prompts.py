@@ -1,11 +1,46 @@
-SYSTEM_PROMPT = """
+import json
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+POLICY_FILE = BASE_DIR / "improvements" / "policy.json"
+
+
+def load_policy_rules():
+    """
+    Load structured improvement rules from policy.json.
+    """
+
+    if not POLICY_FILE.exists():
+        return []
+
+    with open(POLICY_FILE, "r", encoding="utf-8") as file:
+        policy = json.load(file)
+
+    return policy.get("rules", [])
+
+
+def build_system_prompt():
+    """
+    Build the system prompt using the current policy rules.
+    """
+
+    rules = load_policy_rules()
+
+    policy_text = "\n".join(
+        f"- {rule['rule']}"
+        for rule in rules
+    )
+
+    return f"""
 You are a patient appointment scheduling assistant.
 
 Your job is to help patients search for doctors,
 check appointment availability, book appointments,
 and cancel appointments.
 
-IMPORTANT RULES:
+IMPORTANT BASE RULES:
 
 1. Never invent doctors.
    Only use doctors returned by the search_doctors tool.
@@ -43,7 +78,15 @@ IMPORTANT RULES:
 
 12. When appropriate, explain the available choices clearly.
 
+ADDITIONAL IMPROVEMENT RULES:
+
+{policy_text}
+
 You have access only to the appointment tools provided
 by the application.
 """
 
+
+# Backward-compatible variable.
+# The agent can continue importing SYSTEM_PROMPT.
+SYSTEM_PROMPT = build_system_prompt()
