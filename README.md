@@ -404,8 +404,6 @@ Example:
 
 Initial Evaluation
 ------------------
-Score: XX/XX
-
 Failure:
 Unavailable-slot handling
 
