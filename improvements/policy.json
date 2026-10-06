@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "rules": [
+        {
+            "id": "TOOL_001",
+            "rule": "Never confirm an appointment unless booking succeeds."
+        },
+        {
+            "id": "TOOL_002",
+            "rule": "Never offer appointment times that were not returned by availability."
+        }
+    ]
+}
